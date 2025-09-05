@@ -1,4 +1,4 @@
-package com.rest1.global.entity;
+package com.rest1.global.jpa.entity;
 
 import jakarta.persistence.EntityListeners;
 import jakarta.persistence.GeneratedValue;
