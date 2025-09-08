@@ -22,7 +22,7 @@ public class ApiV1CommentController {
     @GetMapping("/{postId}/comments")
     public List<CommentDto> getItems(
             @PathVariable Long postId
-    ){
+    ) {
         Post post = postService.findById(postId).get();
         return post.getComments().stream()
                 .map(CommentDto::new)
@@ -38,5 +38,17 @@ public class ApiV1CommentController {
         Post post = postService.findById(postId).get();
         Comment comment = post.findCommentById(commentId).get();
         return new CommentDto(comment);
+    }
+
+    @GetMapping("/{postId}/comments/{commentId}/delete")
+    @Transactional
+    public String deleteItem(
+            @PathVariable Long postId,
+            @PathVariable Long commentId
+    ) {
+        Post post = postService.findById(postId).get();
+        postService.deleteComment(post, commentId);
+
+        return "%d번 댓글이 삭제되었습니다.".formatted(commentId);
     }
 }
