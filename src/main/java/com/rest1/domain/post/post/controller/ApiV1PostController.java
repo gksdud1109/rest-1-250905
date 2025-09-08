@@ -1,5 +1,6 @@
 package com.rest1.domain.post.post.controller;
 
+import com.rest1.domain.post.post.dto.PostDto;
 import com.rest1.domain.post.post.entity.Post;
 import com.rest1.domain.post.post.service.PostService;
 import lombok.RequiredArgsConstructor;
@@ -17,9 +18,13 @@ public class ApiV1PostController {
 
     private final PostService postService;
 
+
+    // entity, DB구조가 그대로 프론트에 넘어가는건 좋은게 아님
     @GetMapping
     @Transactional(readOnly = true)
-    public List<Post> list() {
-        return postService.findAll();
+    public List<PostDto> list() {
+        return postService.findAll().stream()
+                .map(Post::toDto)
+                .toList();
     }
 }
