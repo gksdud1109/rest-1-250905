@@ -63,15 +63,26 @@ public class ApiV1PostController {
     ) {
     }
 
+    record PostWriteResBody(
+            PostDto postDto,
+            long totalCount
+    ) {}
+
     @PostMapping
-    public RsData<PostDto> createItem(
+    public RsData<PostWriteResBody> createItem(
             @RequestBody @Valid PostWriteReqBody reqBody
     ) {
         Post post = postService.write(reqBody.title, reqBody.content);
+
+        long totalCount = postService.count();
+
         return new RsData<>(
                 "201-1",
                 "%d번 게시물이 생성되었습니다.".formatted(post.getId()),
-                new PostDto(post)
+                new PostWriteResBody(
+                        new PostDto(post),
+                        totalCount
+                )
         );
     }
 }
