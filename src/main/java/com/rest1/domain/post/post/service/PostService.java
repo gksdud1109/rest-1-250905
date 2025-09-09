@@ -1,5 +1,6 @@
 package com.rest1.domain.post.post.service;
 
+import com.rest1.domain.post.comment.entity.Comment;
 import com.rest1.domain.post.post.entity.Post;
 import com.rest1.domain.post.post.repository.PostRepository;
 import lombok.RequiredArgsConstructor;
@@ -35,8 +36,9 @@ public class PostService {
         post.update(title, content);
     }
 
-    public void writeComment(Post post, String content) {
-        post.addComment(content);
+    public Optional<Comment> writeComment(Post post, String content) {
+        Comment comment = post.addComment(content);
+        return Optional.of(comment);
     }
 
     public void deleteComment(Post post, Long commentId) {
@@ -49,5 +51,9 @@ public class PostService {
 
     public void delete(Post post) {
         postRepository.delete(post);
+    }
+
+    public void flush() {
+        postRepository.flush();
     }
 }
