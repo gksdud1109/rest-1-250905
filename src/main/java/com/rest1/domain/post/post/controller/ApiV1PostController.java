@@ -69,11 +69,11 @@ public class ApiV1PostController {
     ) {}
 
     @PostMapping
+    @Transactional
     public RsData<PostWriteResBody> createItem(
             @RequestBody @Valid PostWriteReqBody reqBody
     ) {
         Post post = postService.write(reqBody.title, reqBody.content);
-
         long totalCount = postService.count();
 
         return new RsData<>(
