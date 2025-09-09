@@ -1,5 +1,6 @@
 package com.rest1.global.rsData;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
@@ -16,6 +17,7 @@ public class RsData<T> {
         this.data = null;
     }
 
+    @JsonIgnore
     public int getStatusCode() {
         return Integer.parseInt(resultCode.split("-")[0]);
     }
