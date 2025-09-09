@@ -8,7 +8,6 @@ import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
@@ -53,26 +52,26 @@ public class ApiV1PostController {
         );
     }
 
-    record PostWriteForm(
+    record PostWriteReqBody(
             @NotBlank
-            @Size(min = 2, max = 100)
+            @Size(min = 2, max = 10)
             String title,
+
             @NotBlank
             @Size(min = 2, max = 100)
             String content
-    ) {}
+    ) {
+    }
 
     @PostMapping
-    public ResponseEntity<RsData<PostDto>> createItem(
-            @RequestBody @Valid PostWriteForm form // JSON으로 받음 @RequestBody가 인식
+    public RsData<PostDto> createItem(
+            @RequestBody @Valid PostWriteReqBody reqBody
     ) {
-        Post post = postService.write(form.title, form.content);
-        RsData<PostDto> rsData = new RsData<>(
+        Post post = postService.write(reqBody.title, reqBody.content);
+        return new RsData<>(
                 "201-1",
-                "%d번게시물이 생성되었습니다.".formatted(post.getId()),
+                "%d번 게시물이 생성되었습니다.".formatted(post.getId()),
                 new PostDto(post)
         );
-
-        return ResponseEntity.status(rsData.getStatusCode()).body(rsData);
     }
 }
