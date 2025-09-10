@@ -24,8 +24,8 @@ public class ApiV1PostController {
     // entity, DB구조가 그대로 프론트에 넘어가는건 좋은게 아님
     @GetMapping
     @Transactional(readOnly = true)
-    public List<PostDto> list() {
-        return postService.findAll().stream()
+    public List<PostDto> getItems() {
+        return postService.findAll().reversed().stream()
                 .map(PostDto::new)
                 .toList();
     }
