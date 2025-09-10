@@ -172,4 +172,25 @@ public class ApiV1PostControllerTest {
 
         assertThat(post).isNull();
     }
+    @Test
+    @DisplayName("글 단건 조회, 존재하지 않는 글")
+    void t6() throws Exception {
+        long targetId = Integer.MAX_VALUE;
+        ResultActions resultActions = mvc
+                .perform(
+                        get("/api/v1/posts/%d".formatted(targetId))
+                )
+                .andDo(print());
+
+        resultActions
+                .andExpect(handler().handlerType(ApiV1PostController.class))
+                .andExpect(handler().methodName("getItem"))
+                .andExpect(status().isNotFound())
+                .andExpect(jsonPath("$.resultCode").value("404-1"))
+                .andExpect(jsonPath("$.msg").value("존재하지 않는 데이터입니다."));
+
+        Post post = postRepository.findById(targetId).orElse(null);
+
+        assertThat(post).isNull();
+    }
 }
